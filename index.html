@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lar Irmã Clarice - Acesso</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f1f7f7;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .auth-card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 400px;
+      padding: 36px 28px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(27, 83, 85, 0.08);
+      text-align: center;
+    }
+
+    .logo-container {
+      margin-bottom: 20px;
+    }
+
+    .logo-container svg {
+      width: 90px;
+      height: 90px;
+      fill: #43b3ae;
+    }
+
+    .title {
+      color: #1a4b4f;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      color: #43b3ae;
+      font-size: 13px;
+      letter-spacing: 0.3px;
+      margin-bottom: 24px;
+    }
+
+    .input-group {
+      margin-bottom: 14px;
+      text-align: left;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 13px;
+      color: #557071;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #d2e4e4;
+      border-radius: 8px;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      color: #2c3e50;
+      background: #fbfdfd;
+    }
+
+    .input-field:focus {
+      border-color: #43b3ae;
+      box-shadow: 0 0 0 3px rgba(67, 179, 174, 0.15);
+      background: #ffffff;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background-color 0.2s, transform 0.1s;
+    }
+
+    .btn:active {
+      transform: scale(0.99);
+    }
+
+    .btn-bio {
+      background-color: #43b3ae;
+      color: #ffffff;
+      margin-top: 8px;
+      margin-bottom: 16px;
+    }
+
+    .btn-bio:hover {
+      background-color: #389d99;
+    }
+
+    .btn-pass {
+      background-color: #1a4b4f;
+      color: #ffffff;
+      margin-top: 8px;
+    }
+
+    .btn-pass:hover {
+      background-color: #13393c;
+    }
+
+    .btn-secondary {
+      background-color: #e9f5f5;
+      color: #1a4b4f;
+      margin-top: 10px;
+    }
+
+    .btn-danger {
+      background-color: #feecec;
+      color: #c0392b;
+      margin-top: 16px;
+    }
+
+    .divider {
+      position: relative;
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    .divider::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: #e2ecec;
+    }
+
+    .divider span {
+      position: relative;
+      background: #ffffff;
+      padding: 0 12px;
+      font-size: 12px;
+      color: #8da3a4;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .link-action {
+      font-size: 13px;
+      color: #43b3ae;
+      cursor: pointer;
+      text-decoration: underline;
+      display: inline-block;
+      margin-top: 14px;
+    }
+
+    .status-msg {
+      margin-top: 18px;
+      font-size: 13px;
+      color: #e74c3c;
+      min-height: 18px;
+      word-break: break-word;
+    }
+
+    .status-msg.success {
+      color: #27ae60;
+    }
+
+    .card-section {
+      background: #f8fafb;
+      padding: 16px;
+      border-radius: 10px;
+      margin-top: 16px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="auth-card">
+    <div class="logo-container">
+      <svg viewBox="0 0 100 100">
+        <path d="M50 72 C35 60, 20 48, 20 33 C20 22, 28 15, 38 15 C44 15, 48 18, 50 21 C52 18, 56 15, 62 15 C72 15, 80 22, 80 33 C80 48, 65 60, 50 72 Z" fill="#e74c3c"/>
+        <path d="M22 65 C22 50, 30 35, 40 25 C41 27, 40 31, 38 35 C32 45, 30 55, 34 68 Z" fill="#43b3ae"/>
+        <path d="M78 65 C78 50, 70 35, 60 25 C59 27, 60 31, 62 35 C68 45, 70 55, 66 68 Z" fill="#43b3ae"/>
+      </svg>
+    </div>
+
+    <h1 class="title">Lar Irmã Clarice</h1>
+    <p class="subtitle">Casa de repouso para idosos</p>
+
+    <!-- 1. Tela de Login -->
+    <div id="login-section">
+      <div class="input-group">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" class="input-field" placeholder="seu-email@dominio.com">
+      </div>
+
+      <button id="btn-biometric" class="btn btn-bio">
+        <span>🔐</span> Entrar com Biometria / Celular
+      </button>
+
+      <div class="divider">
+        <span>ou utilize a sua senha</span>
+      </div>
+
+      <div class="input-group">
+        <label for="password">Senha de acesso</label>
+        <input type="password" id="password" class="input-field" placeholder="Digite sua senha">
+      </div>
+
+      <button id="btn-login" class="btn btn-pass">Entrar</button>
+
+      <div>
+        <span id="toggle-forgot" class="link-action">Esqueci-me da senha</span>
+      </div>
+    </div>
+
+    <!-- 2. Tela de Solicitação: Esqueci a Senha -->
+    <div id="forgot-section" style="display: none;">
+      <h2 style="color: #1a4b4f; font-size: 16px; margin-bottom: 8px;">Recuperar Senha</h2>
+      <p style="font-size: 13px; color: #557071; margin-bottom: 16px; text-align: left;">
+        Digite o seu e-mail cadastrado. Um link de redefinição será enviado para a sua caixa de entrada.
+      </p>
+
+      <div class="input-group">
+        <label for="forgot-email">E-mail cadastrado</label>
+        <input type="email" id="forgot-email" class="input-field" placeholder="seu-email@dominio.com">
+      </div>
+
+      <button id="btn-send-reset" class="btn btn-pass">Enviar Link de Recuperação</button>
+      <button id="btn-back-login" class="btn btn-secondary">Voltar ao Login</button>
+    </div>
+
+    <!-- 3. Tela de Redefinição (Aberta ao clicar no link recebido por e-mail) -->
+    <div id="reset-password-section" style="display: none;">
+      <h2 style="color: #1a4b4f; font-size: 16px; margin-bottom: 8px;">Criar Nova Senha</h2>
+      <p style="font-size: 13px; color: #557071; margin-bottom: 16px; text-align: left;">
+        Defina sua nova senha definitiva abaixo:
+      </p>
+      <div class="input-group">
+        <label for="recovery-new-password">Nova Senha</label>
+        <input type="password" id="recovery-new-password" class="input-field" placeholder="Mínimo 6 caracteres">
+      </div>
+      <button id="btn-save-new-password" class="btn btn-pass">Salvar Nova Senha</button>
+    </div>
+
+    <!-- 4. Painel Administrativo do Usuário -->
+    <div id="dashboard-section" style="display: none;">
+      <h2 style="color: #1a4b4f; font-size: 18px; margin-bottom: 6px;">Painel de Acesso</h2>
+      <p id="user-info" style="font-size: 13px; color: #557071; margin-bottom: 16px;"></p>
+
+      <button id="btn-register-passkey" class="btn btn-secondary">
+        📲 Cadastrar Biometria neste Aparelho
+      </button>
+
+      <!-- Trocar Senha Dentro do Painel -->
+      <div class="card-section">
+        <div class="input-group" style="margin-bottom: 8px;">
+          <label for="logged-new-password">Alterar Senha</label>
+          <input type="password" id="logged-new-password" class="input-field" placeholder="Digite a nova senha">
+        </div>
+        <button id="btn-change-password" class="btn btn-pass" style="font-size: 14px; padding: 10px;">
+          Atualizar Senha
+        </button>
+      </div>
+
+      <button id="btn-logout" class="btn btn-danger">Sair</button>
+    </div>
+
+    <p id="status-msg" class="status-msg"></p>
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://oqkbhaabtnpjmxsdewtc.supabase.co';
+    // Cole aqui a sua chave JWT anon public (que começa por eyJ...)
+    const SUPABASE_KEY = 'SUA_CHAVE_ANON_PUBLIC_AQUI';
+
+    const { createClient } = supabase;
+    const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const forgotEmail = document.getElementById('forgot-email');
+    const recoveryNewPassword = document.getElementById('recovery-new-password');
+    const loggedNewPassword = document.getElementById('logged-new-password');
+    const statusMsg = document.getElementById('status-msg');
+
+    const loginSection = document.getElementById('login-section');
+    const forgotSection = document.getElementById('forgot-section');
+    const resetSection = document.getElementById('reset-password-section');
+    const dashSection = document.getElementById('dashboard-section');
+
+    const userInfo = document.getElementById('user-info');
+    const btnBiometric = document.getElementById('btn-biometric');
+
+    // Carrega o último e-mail utilizado no navegador
+    const savedEmail = localStorage.getItem('user_email');
+    if (savedEmail) {
+      emailInput.value = savedEmail;
+      forgotEmail.value = savedEmail;
+    }
+
+    function setStatus(msg, isSuccess = false) {
+      statusMsg.innerText = msg;
+      statusMsg.className = isSuccess ? 'status-msg success' : 'status-msg';
+    }
+
+    function hideAll() {
+      loginSection.style.display = 'none';
+      forgotSection.style.display = 'none';
+      resetSection.style.display = 'none';
+      dashSection.style.display = 'none';
+    }
+
+    function showDashboard(email) {
+      hideAll();
+      dashSection.style.display = 'block';
+      userInfo.innerText = `Conectado como: ${email}`;
+      setStatus('');
+    }
+
+    // Identifica se o usuário abriu o link vindo do e-mail de recuperação
+    sb.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'PASSWORD_RECOVERY') {
+        hideAll();
+        resetSection.style.display = 'block';
+        setStatus('Digite a nova senha abaixo para redefinir.', true);
+      }
+    });
+
+    // Abrir tela de "Esqueci a senha"
+    document.getElementById('toggle-forgot').addEventListener('click', () => {
+      hideAll();
+      forgotSection.style.display = 'block';
+      setStatus('');
+    });
+
+    // Voltar da tela de recuperação para o login
+    document.getElementById('btn-back-login').addEventListener('click', () => {
+      hideAll();
+      loginSection.style.display = 'block';
+      setStatus('');
+    });
+
+    // 1. Entrar com e-mail e senha cadastrados pelo administrador
+    document.getElementById('btn-login').addEventListener('click', async () => {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+
+      if (!email || !password) {
+        setStatus('Preencha o e-mail e a senha.');
+        return;
+      }
+
+      setStatus('Autenticando...');
+      const { data, error } = await sb.auth.signInWithPassword({ email, password });
+
+      if (error) {
+        setStatus('E-mail ou senha incorretos.');
+      } else {
+        localStorage.setItem('user_email', email);
+        showDashboard(email);
+      }
+    });
+
+    // 2. Enviar link para o e-mail cadastrado
+    document.getElementById('btn-send-reset').addEventListener('click', async () => {
+      const email = forgotEmail.value.trim();
+      if (!email) {
+        setStatus('Digite o seu e-mail.');
+        return;
+      }
+
+      setStatus('Enviando e-mail de recuperação...');
+      const { error } = await sb.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin
+      });
+
+      if (error) {
+        setStatus('Erro ao enviar link: ' + error.message);
+      } else {
+        setStatus('Link enviado com sucesso! Verifique sua caixa de entrada.', true);
+      }
+    });
+
+    // 3. Salvar nova senha após abrir o link do e-mail
+    document.getElementById('btn-save-new-password').addEventListener('click', async () => {
+      const newPassword = recoveryNewPassword.value.trim();
+      if (!newPassword || newPassword.length < 6) {
+        setStatus('A nova senha deve ter no mínimo 6 caracteres.');
+        return;
+      }
+
+      setStatus('Atualizando senha...');
+      const { data, error } = await sb.auth.updateUser({ password: newPassword });
+
+      if (error) {
+        setStatus('Erro ao atualizar senha: ' + error.message);
+      } else {
+        setStatus('Senha redefinida com sucesso! Você já pode entrar.', true);
+        recoveryNewPassword.value = '';
+        setTimeout(() => {
+          hideAll();
+          loginSection.style.display = 'block';
+        }, 1500);
+      }
+    });
+
+    // 4. Alterar senha dentro do painel logado
+    document.getElementById('btn-change-password').addEventListener('click', async () => {
+      const newPassword = loggedNewPassword.value.trim();
+      if (!newPassword || newPassword.length < 6) {
+        setStatus('A nova senha deve ter no mínimo 6 caracteres.');
+        return;
+      }
+
+      setStatus('Atualizando...');
+      const { error } = await sb.auth.updateUser({ password: newPassword });
+
+      if (error) {
+        setStatus('Erro ao alterar senha: ' + error.message);
+      } else {
+        loggedNewPassword.value = '';
+        setStatus('Senha atualizada com sucesso!', true);
+      }
+    });
+
+    // 5. Cadastrar Biometria no Aparelho
+    document.getElementById('btn-register-passkey').addEventListener('click', async () => {
+      const email = localStorage.getItem('user_email');
+      if (!window.PublicKeyCredential) {
+        setStatus('Biometria não suportada neste navegador.');
+        return;
+      }
+
+      try {
+        setStatus('Confirme sua digital ou reconhecimento facial...');
+        const challenge = window.crypto.getRandomValues(new Uint8Array(32));
+        const userId = new Uint8Array(16);
+        window.crypto.getRandomValues(userId);
+
+        const credential = await navigator.credentials.create({
+          publicKey: {
+            challenge,
+            rp: { name: "Lar Irmã Clarice" },
+            user: { id: userId, name: email, displayName: email },
+            pubKeyCredParams: [{ alg: -7, type: "public-key" }, { alg: -257, type: "public-key" }],
+            authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "required" },
+            timeout: 60000
+          }
+        });
+
+        if (credential) {
+          const credIdBase64 = btoa(String.fromCharCode(...new Uint8Array(credential.rawId)));
+          await sb.from('user_passkeys').insert([{ user_email: email, credential_id: credIdBase64 }]);
+          localStorage.setItem(`passkey_${email}`, credIdBase64);
+          setStatus('Biometria cadastrada com sucesso neste dispositivo!', true);
+        }
+      } catch (err) {
+        setStatus('Falha ao cadastrar biometria: ' + err.message);
+      }
+    });
+
+    // 6. Entrar com Biometria
+    btnBiometric.addEventListener('click', async () => {
+      const email = emailInput.value.trim();
+      if (!email) {
+        setStatus('Digite seu e-mail acima primeiro.');
+        return;
+      }
+
+      let credIdBase64 = localStorage.getItem(`passkey_${email}`);
+      if (!credIdBase64) {
+        const { data } = await sb.from('user_passkeys').select('credential_id').eq('user_email', email).limit(1);
+        if (data && data.length > 0) credIdBase64 = data[0].credential_id;
+      }
+
+      if (!credIdBase64) {
+        setStatus('Nenhuma biometria cadastrada neste aparelho para este e-mail. Entre com a senha primeiro para cadastrar.');
+        return;
+      }
+
+      try {
+        setStatus('Aproxime o dedo ou aponte o rosto...');
+        const challenge = window.crypto.getRandomValues(new Uint8Array(32));
+        const credId = Uint8Array.from(atob(credIdBase64), c => c.charCodeAt(0));
+
+        const assertion = await navigator.credentials.get({
+          publicKey: {
+            challenge,
+            allowCredentials: [{ id: credId, type: 'public-key' }],
+            userVerification: 'required'
+          }
+        });
+
+        if (assertion) {
+          localStorage.setItem('user_email', email);
+          showDashboard(email);
+        }
+      } catch (err) {
+        setStatus('Autenticação biométrica cancelada.');
+      }
+    });
+
+    // 7. Sair
+    document.getElementById('btn-logout').addEventListener('click', async () => {
+      await sb.auth.signOut();
+      hideAll();
+      loginSection.style.display = 'block';
+      setStatus('');
+    });
+  </script>
+</body>
+</html>
